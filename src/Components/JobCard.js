@@ -49,6 +49,9 @@ const JobCard = ({ job }) => {
         <Typography color="textSecondary">
           Experience: {job.minExp} - {job.maxExp} years
         </Typography>
+        <Typography color="textSecondary">
+        Salary range: {job.minJdSalary} - {job.maxJdSalary} {job.salaryCurrencyCode}
+      </Typography>
         <Button variant="contained" color="primary" className={classes.applyButton}>
           Apply Now
         </Button>

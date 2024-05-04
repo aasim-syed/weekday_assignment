@@ -1,62 +1,37 @@
-// App.js
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Container, Grid } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
 import JobCard from './Components/JobCard';
 import Filter from './Components/Filter';
 import InfiniteScroll from './Components/InfiniteScroll';
-import fetchData from './utils/api';
-import { CenterFocusStrong } from '@material-ui/icons';
-
+import { fetchDataAsync } from './actions/asyncAction';
+import { filterJobs } from './actions/actions';
 function App() {
-  const [jobs, setJobs] = useState([]);
-  const [offset, setOffset] = useState(0);
+  const dispatch = useDispatch();
+  const { jobs } = useSelector(state => state.data);
+  const offset = useSelector(state => state.data.offset);
   const limit = 10;
 
-  
-  
   useEffect(() => {
-    fetchJobs();
-  }, []);
-
-  const fetchJobs = async () => {
-    const data = await fetchData(limit, offset);
-    if (data && data.jdList && Array.isArray(data.jdList)) {
-      setJobs(prevJobs => [...prevJobs, ...data.jdList]);
-      setOffset(offset + limit);
-    } else {
-      console.error("Invalid data format received from API");
-    }
-  }
+    dispatch(fetchDataAsync(limit, offset));
+  }, [dispatch, offset, limit]);
 
   const handleFilter = (filters) => {
-    // Filter jobs based on user's selected criteria
-    const filteredJobs = jobs.filter(job => {
-      return (
-        (!filters.minExperience || job.minExp >= parseInt(filters.minExperience)) &&
-        (!filters.companyName || job.companyName.toLowerCase().includes(filters.companyName.toLowerCase())) &&
-        (!filters.location || job.location.toLowerCase().includes(filters.location.toLowerCase())) &&
-        (!filters.remote || job.location.toLowerCase() === 'remote') === (filters.remote.toLowerCase() === 'remote') &&
-        (!filters.techStack || job.techStack.toLowerCase().includes(filters.techStack.toLowerCase())) &&
-        (!filters.role || job.jobRole.toLowerCase().includes(filters.role.toLowerCase())) &&
-        (!filters.minBasePay || job.minJdSalary >= parseInt(filters.minBasePay))
-      );
-    });
-    setJobs(filteredJobs);
+    // Dispatch action to filter jobs
+    dispatch(filterJobs(filters));
   };
 
   return (
     <Container>
       <Grid container spacing={3} direction="column" alignItems="center">
-      <Filter onFilter={handleFilter} />
-
-
-        <Grid item xs={12} md={9} container direction="row" spacing={3} justify="center" >
+        <Filter onFilter={handleFilter} />
+        <Grid item xs={12} md={9} container direction="row" spacing={3} justify="center">
           {jobs.map(job => (
             <Grid key={job.jdUid} item xs={12} sm={6} md={4} lg={3}>
               <JobCard job={job} />
             </Grid>
           ))}
-          <InfiniteScroll loadMore={fetchJobs} />
+          <InfiniteScroll loadMore={() => dispatch(fetchDataAsync(limit, offset))} />
         </Grid>
       </Grid>
     </Container>

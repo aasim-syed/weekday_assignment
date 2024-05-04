@@ -1,5 +1,5 @@
 // utils/api.js
-const fetchData = async (limit, offset) => {
+export const fetchData = async (limit, offset) => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
   

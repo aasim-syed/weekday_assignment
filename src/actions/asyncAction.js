@@ -8,8 +8,10 @@ export const fetchDataAsync = (limit, offset, filters) => {
       if (data && data.jdList && Array.isArray(data.jdList)) {
         dispatch(setJobs(data.jdList));
         dispatch(incrementOffset(limit));
-        // Always dispatch filterJobs action
-        dispatch(filterJobs(filters));
+        // Check if filters exist before dispatching filterJobs action
+        if (filters) {
+          dispatch(filterJobs(filters));
+        }
       } else {
         console.error("Invalid data format received from API");
       }

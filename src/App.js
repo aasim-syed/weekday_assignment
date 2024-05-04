@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react'; // Import useState
 import { Container, Grid } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import JobCard from './Components/JobCard';
@@ -6,19 +6,28 @@ import Filter from './Components/Filter';
 import InfiniteScroll from './Components/InfiniteScroll';
 import { fetchDataAsync } from './actions/asyncAction';
 import { filterJobs } from './actions/actions';
+
 function App() {
   const dispatch = useDispatch();
   const { jobs } = useSelector(state => state.data);
   const offset = useSelector(state => state.data.offset);
   const limit = 10;
+  
+  // Define filters state
+  const [filters, setFilters] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchDataAsync(limit, offset));
-  }, [dispatch, offset, limit]);
+    // Pass filters state to fetchDataAsync
+    dispatch(fetchDataAsync(limit, offset, filters));
+  }, [dispatch, offset, limit, filters]);
 
-  const handleFilter = (filters) => {
-    // Dispatch action to filter jobs
-    dispatch(filterJobs(filters));
+  const handleFilter = (newFilters) => {
+    // Update filters state when filter changes
+    setFilters(newFilters);
+  };
+
+  const loadMore = () => {
+    dispatch(fetchDataAsync(limit, offset + limit, filters)); // Pass filters to loadMore
   };
 
   return (
@@ -31,7 +40,7 @@ function App() {
               <JobCard job={job} />
             </Grid>
           ))}
-          <InfiniteScroll loadMore={() => dispatch(fetchDataAsync(limit, offset))} />
+          <InfiniteScroll loadMore={loadMore} />
         </Grid>
       </Grid>
     </Container>

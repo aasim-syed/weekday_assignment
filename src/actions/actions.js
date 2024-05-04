@@ -8,10 +8,12 @@ export const setJobs = (jobs) => ({
   payload: jobs
 });
 
-export const filterJobs = (filters) => ({
-  type: FILTER_JOBS,
-  payload: filters
-});
+// actions/actions.js
+export const filterJobs = ({ minExperience, companyName, location, remote, techStack, role, minBasePay }) => ({
+    type: FILTER_JOBS,
+    payload: { minExperience, companyName, location, remote, techStack, role, minBasePay },
+  });
+  
 
 export const incrementOffset = (value) => ({
   type: INCREMENT_OFFSET,

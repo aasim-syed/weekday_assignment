@@ -1,24 +1,51 @@
 // JobCard.js
 import React from 'react';
-import { Card, CardContent, Typography } from '@material-ui/core';
+import { Card, CardContent, Typography, Button, makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
+  card: {
+    marginBottom: '20px',
+    boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+  },
+  companyName: {
+    fontWeight: 'bold',
+    marginRight: '10px',
+  },
+  location: {
+    fontStyle: 'italic',
+  },
+  description: {
+    marginTop: '10px',
+  },
+  applyButton: {
+    marginTop: '20px',
+  },
+});
 
 const JobCard = ({ job }) => {
+  const classes = useStyles();
+
   return (
-    <Card>
+    <Card className={classes.card}>
       <CardContent>
-        <Typography variant="h5" component="h2">
+        <Typography variant="h6" component="h2">
           {job.title}
         </Typography>
+        <Typography color="textSecondary" className={classes.companyName}>
+          {job.companyName}
+        </Typography>
+        <Typography color="textSecondary" className={classes.location}>
+          {job.location}
+        </Typography>
+        <Typography variant="body2" component="p" className={classes.description}>
+          {job.description && job.description.substring(0, 150)} {/* Check if description exists */}
+        </Typography>
         <Typography color="textSecondary">
-          {job.companyName} - {job.location}
+          Experience: {job.minExp} - {job.maxExp} years
         </Typography>
-        <Typography variant="body2" component="p">
-          {job.description}
-        </Typography>
-        <Typography color="textSecondary">
-          Experience: {job.experience}
-        </Typography>
-        <button>Apply</button>
+        <Button variant="contained" color="primary" className={classes.applyButton}>
+          Apply Now
+        </Button>
       </CardContent>
     </Card>
   );

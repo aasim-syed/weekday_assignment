@@ -3,10 +3,16 @@ import React from 'react';
 import { Card, CardContent, Typography, Button, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
-  card: {
-    marginBottom: '20px',
-    boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-  },
+    card: {
+        width: '200px',  // Set a fixed width
+        height: '200px', // Set height equal to width to keep it square
+        marginBottom: '20px',
+        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between' // This ensures the button stays at the bottom
+      },
+    
   companyName: {
     fontWeight: 'bold',
     marginRight: '10px',

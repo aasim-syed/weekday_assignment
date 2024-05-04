@@ -11,6 +11,8 @@ function App() {
   const [offset, setOffset] = useState(0);
   const limit = 10;
 
+  
+  
   useEffect(() => {
     fetchJobs();
   }, []);
@@ -47,9 +49,11 @@ function App() {
         <Grid item xs={12} md={3}>
           <Filter onFilter={handleFilter} />
         </Grid>
-        <Grid item xs={12} md={9}>
+        <Grid item xs={12} md={9} container direction="row" spacing={3}>
           {jobs.map(job => (
-            <JobCard key={job.jdUid} job={job} />
+            <Grid key={job.jdUid} item xs={12} sm={6} md={4} lg={3}>
+              <JobCard job={job} />
+            </Grid>
           ))}
           <InfiniteScroll loadMore={fetchJobs} />
         </Grid>

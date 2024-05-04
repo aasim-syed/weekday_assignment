@@ -5,6 +5,7 @@ import JobCard from './Components/JobCard';
 import Filter from './Components/Filter';
 import InfiniteScroll from './Components/InfiniteScroll';
 import fetchData from './utils/api';
+import { CenterFocusStrong } from '@material-ui/icons';
 
 function App() {
   const [jobs, setJobs] = useState([]);
@@ -45,11 +46,11 @@ function App() {
 
   return (
     <Container>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={3}>
-          <Filter onFilter={handleFilter} />
-        </Grid>
-        <Grid item xs={12} md={9} container direction="row" spacing={3}>
+      <Grid container spacing={3} direction="column" alignItems="center">
+      <Filter onFilter={handleFilter} />
+
+
+        <Grid item xs={12} md={9} container direction="row" spacing={3} justify="center" >
           {jobs.map(job => (
             <Grid key={job.jdUid} item xs={12} sm={6} md={4} lg={3}>
               <JobCard job={job} />

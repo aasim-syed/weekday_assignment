@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'; // Import useState
+import React, { useEffect, useState } from 'react';
 import { Container, Grid } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import JobCard from './Components/JobCard';
@@ -22,9 +22,10 @@ function App() {
   }, [dispatch, offset, limit, filters]);
 
   const handleFilter = (newFilters) => {
-    // Update filters state when filter changes
-    filterJobs(newFilters);
+    // Dispatch the filterJobs action
+    dispatch(filterJobs(newFilters));
   };
+  
 
   const loadMore = () => {
     // Increase limit before fetching more data
@@ -34,11 +35,11 @@ function App() {
   
   return (
     <Container>
-      <Grid container spacing={3} direction="column" alignItems="center">
+      <Grid container spacing={3} direction="column" alignItems="center" >
         <Filter onFilter={handleFilter} />
-        <Grid item xs={12} md={9} container direction="row" spacing={3} justify="center">
+        <Grid item xs={12} md={9} container direction="row" GridJustification="center">
           {jobs.map(job => (
-            <Grid key={job.jdUid} item xs={12} sm={6} md={4} lg={3}>
+            <Grid key={job.jdUid} item xs={12} sm={6} md={4} lg={3} >
               <JobCard job={job} />
             </Grid>
           ))}

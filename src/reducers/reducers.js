@@ -13,32 +13,37 @@ const dataReducer = (state = initialState, action) => {
       console.log("SET_JOBS action dispatched:", action.payload);
       return {
         ...state,
-        data: {
+         data: {
+          ...state.data,
+          jobs: action.payload
+        }
+      };
+      case FILTER_JOBS:
+        console.log("FILTER_JOBS action dispatched with payload:", action.payload);
+        const { minExperience, companyName, location, remote, techStack, role, minBasePay } = action.payload;
+        const filteredJobs = state.data.jobs.filter(job => (
+          (!minExperience || job.minExp >= parseInt(minExperience)) &&
+          (!companyName || job.companyName.toLowerCase().includes(companyName.toLowerCase())) &&
+          (!location || job.location.toLowerCase().includes(location.toLowerCase())) &&
+          (!remote || job.location.toLowerCase() === 'remote') === (remote.toLowerCase() === 'remote') &&
+          (!techStack || job.techStack.toLowerCase().includes(techStack.toLowerCase())) &&
+          (!role || job.jobRole.toLowerCase().includes(role.toLowerCase())) &&
+          (!minBasePay || job.minJdSalary >= parseInt(minBasePay))
+        ));
+        console.log("Filtered jobs:", filteredJobs);
+        return {
+          ...state,
+          data: {
             ...state.data,
-            jobs: action.payload
+            jobs: filteredJobs
           }
-      };
-    case FILTER_JOBS:
-      console.log("FILTER_JOBS action dispatched with payload:", action.payload);
-      const { minExperience, companyName, location, remote, techStack, role, minBasePay } = action.payload;
-      const filteredJobs = state.jobs.filter(job => (
-        (!minExperience || job.minExp >= parseInt(minExperience)) &&
-        (!companyName || job.companyName.toLowerCase().includes(companyName.toLowerCase())) &&
-        (!location || job.location.toLowerCase().includes(location.toLowerCase())) &&
-        (!remote || job.location.toLowerCase() === 'remote') === (remote.toLowerCase() === 'remote') &&
-        (!techStack || job.techStack.toLowerCase().includes(techStack.toLowerCase())) &&
-        (!role || job.jobRole.toLowerCase().includes(role.toLowerCase())) &&
-        (!minBasePay || job.minJdSalary >= parseInt(minBasePay))
-      ));
-      console.log("Filtered jobs:", filteredJobs);
-      return {
-        ...state,
-        jobs: filteredJobs
-      };
+        };
+      
+      
     case INCREMENT_OFFSET:
       console.log("INCREMENT_OFFSET action dispatched with payload:", action.payload);
       return {
-        ...state,   
+        ...state,
         offset: state.offset + action.payload
       };
     default:

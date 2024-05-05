@@ -11,7 +11,7 @@ function App() {
   const dispatch = useDispatch();
   const { jobs } = useSelector(state => state.data);
   const offset = useSelector(state => state.data.offset);
-  const limit = 10;
+  const [limit, setLimit] = useState(10);
   
   // Define filters state
   const [filters, setFilters] = useState(null);
@@ -23,13 +23,15 @@ function App() {
 
   const handleFilter = (newFilters) => {
     // Update filters state when filter changes
-    setFilters(newFilters);
+    filterJobs(newFilters);
   };
 
   const loadMore = () => {
-    dispatch(fetchDataAsync(limit, offset + limit, filters)); // Pass filters to loadMore
+    // Increase limit before fetching more data
+    setLimit(prevLimit => prevLimit + 10);
+    dispatch(fetchDataAsync(limit + 10, offset, filters)); // Pass updated limit to loadMore
   };
-
+  
   return (
     <Container>
       <Grid container spacing={3} direction="column" alignItems="center">

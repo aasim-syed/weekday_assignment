@@ -7,7 +7,7 @@ export const fetchDataAsync = (limit, offset, filters) => {
       const data = await fetchData(limit, offset);
       if (data && data.jdList && Array.isArray(data.jdList)) {
         dispatch(setJobs(data.jdList));
-        dispatch(incrementOffset(limit));
+        dispatch(incrementOffset(limit+ data.TotalCount));
         // Check if filters exist before dispatching filterJobs action
         if (filters) {
           dispatch(filterJobs(filters));

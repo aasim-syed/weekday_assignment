@@ -1,11 +1,12 @@
+// reducers/dataReducer.js
 import { SET_JOBS, FILTER_JOBS, INCREMENT_OFFSET } from '../actions/actions';
 
 const initialState = {
     data: {
-      jobs: [], // Initialize jobs array here
+      jobs: [],
       offset: 0
     }
-  };
+};
 
 const dataReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -19,7 +20,6 @@ const dataReducer = (state = initialState, action) => {
         }
       };
       case FILTER_JOBS:
-        console.log("FILTER_JOBS action dispatched with payload:", action.payload);
         const { minExperience, companyName, location, remote, techStack, role, minBasePay } = action.payload;
         const filteredJobs = state.data.jobs.filter(job => (
           (!minExperience || job.minExp >= parseInt(minExperience)) &&
@@ -30,21 +30,22 @@ const dataReducer = (state = initialState, action) => {
           (!role || job.jobRole.toLowerCase().includes(role.toLowerCase())) &&
           (!minBasePay || job.minJdSalary >= parseInt(minBasePay))
         ));
-        console.log("Filtered jobs:", filteredJobs);
         return {
           ...state,
           data: {
             ...state.data,
-            jobs: filteredJobs
+            jobs: filteredJobs  // Set the filtered jobs
           }
         };
-      
       
     case INCREMENT_OFFSET:
       console.log("INCREMENT_OFFSET action dispatched with payload:", action.payload);
       return {
         ...state,
-        offset: state.offset + action.payload
+        data: {
+          ...state.data,
+          offset: state.data.offset + action.payload
+        }
       };
     default:
       return state;
